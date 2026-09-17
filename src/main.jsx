@@ -4,6 +4,8 @@ import { ArrowRight, CarFront, Check, Crown, HeartHandshake, MapPin, Menu, Mount
 import './styles.css'
 import { SEROSE_CONFIG } from './config'
 
+const assetUrl = (fileName) => `${import.meta.env.BASE_URL}${fileName}`
+
 const experiences = [
   { icon: PartyPopper, title: 'Bachelor & Bachelorette', copy: 'Curated group celebrations built around your pace, interests and budget.' },
   { icon: Music2, title: 'Nightlife Experiences', copy: 'One stop or four. Tell us your vibe and we help shape the night.' },
@@ -97,7 +99,7 @@ function App(){
 
   return <div className="site-shell">
     <header className="nav-wrap"><div className="container nav">
-      <button className="brand" onClick={()=>scrollTo('home')} aria-label="SEROSE home"><img className="logo-img" src="/serose-logo.png" alt="SEROSE"/><small>EXPERIENCES BEYOND ORDINARY</small></button>
+      <button className="brand" onClick={()=>scrollTo('home')} aria-label="SEROSE home"><img className="logo-img" src={assetUrl('serose-logo.png')} alt="SEROSE"/><small>EXPERIENCES BEYOND ORDINARY</small></button>
       <nav className={menuOpen?'nav-links open':'nav-links'}>
         {[[ 'experiences','Experiences'],['night','Build Your Night'],['reno','Reno'],['how','How It Works'],['about','About']].map(([id,label])=><button key={id} onClick={()=>scrollTo(id)}>{label}</button>)}
       </nav>
@@ -120,12 +122,12 @@ function App(){
           </div>
           <div className="hero-card-wrap">
             <div className="hero-photo-card">
-              <img src="/reno-nightlife.jpg" alt="Reno nightlife experience"/>
+              <img src={assetUrl('reno-nightlife.jpg')} alt="Reno nightlife experience"/>
               <div className="photo-shade"></div>
               <div className="photo-copy"><span>RENO AFTER DARK</span><strong>Good People.<br/>Great Nights.</strong></div>
             </div>
             <div className="hero-card">
-              <div className="rose-orbit"><div className="rose">🌹</div></div><span className="mini-label">THE SEROSE EXPERIENCE</span>
+              <div className="rose-orbit"><img className="rose-mark" src={assetUrl('serose-logo.png')} alt="SEROSE rose mark"/></div><span className="mini-label">THE SEROSE EXPERIENCE</span>
               <h3>People. Places.<br/>Possibilities.</h3>
                   <div className="mini-grid"><div><Music2/><span>Nightlife</span></div><div><Trophy/><span>Golf</span></div><div><Mountain/><span>Day Trips</span></div><div><CarFront/><span>Transport</span></div></div>
               <div className="card-note">Good people. Great places. Unforgettable nights.</div>
@@ -256,7 +258,7 @@ function App(){
     </main>
 
     <footer><div className="container footer-grid">
-      <div><img className="logo-img footer-logo" src="/serose-logo.png" alt="SEROSE"/><p>Experiences Beyond Ordinary.</p></div>
+      <div><img className="logo-img footer-logo" src={assetUrl('serose-logo.png')} alt="SEROSE"/><p>Experiences Beyond Ordinary.</p></div>
       <div><strong>Explore</strong><button onClick={()=>scrollTo('experiences')}>Experiences</button><button onClick={()=>scrollTo('night')}>Build Your Night</button><button onClick={()=>scrollTo('reno')}>Reno</button></div>
       <div><strong>Company</strong><button onClick={()=>scrollTo('about')}>About</button><button onClick={()=>scrollTo('standards')}>Professional Standards</button><button onClick={()=>scrollTo('private-entertainment')}>Private Entertainment</button><button onClick={()=>scrollTo('plan')}>Plan Your Experience</button><button onClick={()=>scrollTo('policies')}>Legal / Compliance</button><a className="contact-link" href={`mailto:${SEROSE_CONFIG.contactEmail}`}>{SEROSE_CONFIG.contactEmail}</a><span>SEROSE — Reno, Nevada</span><small>Legal entity and license information will be posted once finalized and verified.</small></div>
     </div><div className="container footer-bottom"><span>© 2026 SEROSE. All rights reserved.</span><span>Hospitality • Experiences • Concierge</span></div></footer>
