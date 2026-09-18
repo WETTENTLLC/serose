@@ -41,11 +41,14 @@ function App(){
   const [golf,setGolf]=useState('Maybe')
   const [dinner,setDinner]=useState('Maybe')
   const [submitted,setSubmitted]=useState(false)
+  const [submitError,setSubmitError]=useState('')
   const selectedClub=useMemo(()=>clubPlans.find(p=>p.n===clubs),[clubs])
   const scrollTo=(id)=>{document.getElementById(id)?.scrollIntoView({behavior:'smooth'});setMenuOpen(false)}
   const handleSubmit=async(e)=>{
     e.preventDefault()
     const form=e.currentTarget
+    setSubmitError('')
+    setSubmitted('sending')
     const requestFields={
       ...Object.fromEntries(new FormData(form).entries()),
       nightlifeExperience:`${clubs} ${clubs===1?'Club':'Clubs'}`,
@@ -92,6 +95,7 @@ function App(){
       form.reset()
       setTimeout(()=>setSubmitted(false),7000)
     }catch(err){
+      setSubmitError(err instanceof Error ? err.message : 'The request could not be sent.')
       setSubmitted('error')
       setTimeout(()=>setSubmitted(false),7000)
     }
@@ -233,10 +237,11 @@ function App(){
             <label className="consent"><input required type="checkbox" name="guestConductAgreement"/><span>I agree to treat SEROSE staff, hosts, venue employees, drivers and other guests respectfully. Harassment, threats, unwanted touching, sexual solicitation or unsafe conduct are not allowed.</span></label>
             <p>Submitting a request does not create a confirmed booking, reservation, guarantee of admission, confirmed pricing, or guaranteed availability. SEROSE reviews each request for availability, legality, venue requirements and service fit before confirmation.</p>
           </div>
-          <div className="form-footer"><div className="request-summary"><span>REQUEST SUMMARY</span><strong>{occasion} • {clubs} {clubs===1?'Club':'Clubs'} • {vibe} • {budget}</strong></div><div className="submit-wrap"><button className="btn-primary submit" type="submit">Request My SEROSE Experience <ArrowRight size={18}/></button><p className="booking-note">SEROSE provides professional hospitality and experience coordination. No sexual services are offered. Certain entertainment, transportation and venue services are provided only where legally permitted and properly licensed.</p></div></div>
+          {submitted==='sending'&&<div className="success sending" role="status">Sending your request to SEROSE...</div>}
+          <div className="form-footer"><div className="request-summary"><span>REQUEST SUMMARY</span><strong>{occasion} • {clubs} {clubs===1?'Club':'Clubs'} • {vibe} • {budget}</strong></div><div className="submit-wrap"><button className="btn-primary submit" type="submit" disabled={submitted==='sending'}>{submitted==='sending'?'Sending...':<>Request My SEROSE Experience <ArrowRight size={18}/></>}</button><p className="booking-note">SEROSE provides professional hospitality and experience coordination. No sexual services are offered. Certain entertainment, transportation and venue services are provided only where legally permitted and properly licensed.</p></div></div>
           {submitted==='sent'&&<div className="success"><Check/> Request sent. SEROSE can now follow up with the guest.</div>}
           {submitted==='setup'&&<div className="success setup"><Check/> The form is built and ready. Add the Google Form action and entry mappings in <b>src/config.js</b> to start receiving requests.</div>}
-          {submitted==='error'&&<div className="success error">We couldn't send the request. Please try again or contact SEROSE directly.</div>}
+          {submitted==='error'&&<div className="success error" role="alert">We couldn't send the request. {submitError || 'Please try again or contact SEROSE directly.'}</div>}
         </form>
       </div></section>
 
